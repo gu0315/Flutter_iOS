@@ -1,0 +1,11 @@
+//
+//  Flutter.xcconfig
+//  Flutter_iOS
+//
+//  Created by 顾钱想 on 2021/2/24.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+#include "../my_flutter/.ios/Flutter/Generated.xcconfig"
+
