@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 void main() => runApp(MyApp());
 
@@ -45,9 +46,13 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  var mes = '';
 
   ///添加监听
   static const methodChannel = const MethodChannel("channel");
+  final BasicMessageChannel methodChannel2 =
+      BasicMessageChannel('channel2', StandardMessageCodec());
+
   void _incrementCounter() {
     setState(() {
       // This call to setState tells the Flutter framework that something has
@@ -57,12 +62,24 @@ class _MyHomePageState extends State<MyHomePage> {
       // called again, and so nothing would appear to happen.
       _counter++;
 
+      ///接收iOS信息
+      methodChannel.setMethodCallHandler((call) {
+        print('收到了来自iOS的:$call');
+        mes = '收到了来自iOS的:$call';
+      });
+
       ///发送通信
       Map<String, dynamic> map = {
         "code": "200",
         "data": [_counter]
       };
       methodChannel.invokeMethod("channel", map);
+
+      methodChannel2.setMessageHandler((message) {
+        print('收到了来自iOS的:$message');
+        _counter = message;
+        return null;
+      });
     });
   }
 
@@ -100,6 +117,7 @@ class _MyHomePageState extends State<MyHomePage> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Text(mes),
             Text(
               'You have pushed the button this many times:',
             ),
