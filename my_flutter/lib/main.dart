@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void main() => runApp(MyApp());
 
@@ -45,6 +46,8 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
+  ///添加监听
+  static const methodChannel = const MethodChannel("channel");
   void _incrementCounter() {
     setState(() {
       // This call to setState tells the Flutter framework that something has
@@ -53,6 +56,13 @@ class _MyHomePageState extends State<MyHomePage> {
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
       _counter++;
+
+      ///发送通信
+      Map<String, dynamic> map = {
+        "code": "200",
+        "data": [_counter]
+      };
+      methodChannel.invokeMethod("channel", map);
     });
   }
 
